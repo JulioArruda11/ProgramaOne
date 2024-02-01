@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decodificador de Texto</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <main>
+        <section class="apresentacao">
+            <a class="apresentacao__logo" href="#">
+                <img src="imagens/alura.png" alt="Logo Alura">
+            </a>
+            
+            <div class="apresentacao__entrada">
+                <textarea name="textoentrada" id="entrada" cols="30" rows="10" placeholder="Digite seu texto aqui..."></textarea>
+                <p style="padding: 2%; font-weight: bold; color: darkblue; text-shadow: 0px 0px 5px rgba(137, 43, 226, 0.733);">&#10071 Apenas letras minúsculas e sem acento.</p>
+                <div class="apresentacao__entrada__botao">
+                    <button id="crip" class="botao" onclick="criptografar()">Criptografar</button>
+                    <button id="descrip" class="botao" onclick="descriptografar()">Descriptografar</button>
+                </div>
+            </div>
+            <div class="apresentacao__saida" id="container">
+                <img id="imagem" src="imagens/1.PNG.png" alt="Digite um texto que você deseja criptografar ou descriptografar.">
+                <textarea name="textosaida" id="saida" cols="30" rows="10" hidden></textarea>
+
+                <button class="apresentacao__saida__botao" id="botaoCrip" onclick="copiar()" hidden>Copiar</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desenvolvido por Julio Arruda.</p>
+    </footer>
+
+    <script>
+        function criptografar() {
+            document.getElementById('imagem').style.display = 'none';
+            document.getElementById('saida').removeAttribute('hidden');
+            document.getElementById('botaoCrip').removeAttribute('hidden');
+    
+            let textoEntrada = document.querySelector('#entrada').value;
+    
+            let stringSubstituida = codifica(textoEntrada);
+    
+            document.querySelector('#saida').value = stringSubstituida;
+        }
+    
+        function descriptografar() {
+            document.getElementById('imagem').style.display = 'none';
+            document.getElementById('saida').removeAttribute('hidden');
+            document.getElementById('botaoCrip').removeAttribute('hidden');
+    
+            let textoEntrada = document.querySelector('#entrada').value;
+    
+            let stringSubstituida = descodifica(textoEntrada);
+            document.querySelector('#saida').value = stringSubstituida;
+        }
+    
+        function codifica(textoEntrada) {
+            let substituicoes = {
+                'a': 'ai',
+                'e': 'enter',
+                'i': 'imes',
+                'o': 'ober',
+                'u': 'ufat'
+            };
+    
+            let stringSubstituida = textoEntrada.replace(/[aeiou]/g, function(match) {
+                return substituicoes[match] || match;
+            });
+    
+            return stringSubstituida;
+        }
+    
+        function descodifica(textoEntrada) {
+            let substituicoes = {
+                'ai': 'a',
+                'enter': 'e',
+                'imes': 'i',
+                'ober': 'o',
+                'ufat': 'u'
+            };
+    
+            let stringSubstituida = textoEntrada.replace(/(ai|enter|imes|ober|ufat)/g, function(match) {
+                return substituicoes[match] || match;
+            });
+    
+            return stringSubstituida;
+        }
+    
+        function copiar() {
+            var textarea = document.querySelector('#saida');
+            textarea.select();
+    
+            try {
+                var sucesso = document.execCommand('copy');
+                var mensagem = sucesso ? 'Conteúdo copiado com sucesso!' : 'Erro ao copiar o conteúdo.';
+                console.log(mensagem);
+            } catch (err) {
+                console.error('Erro ao executar o comando de cópia:', err);
+            }
+        }
+    </script>
+</body>
+</html>
